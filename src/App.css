@@ -1,0 +1,311 @@
+.todos {
+  color: #b83f45;
+  font-size: 80px;
+  font-weight: 200;
+  text-align: center;
+  top: -140px;
+  width: 100%;
+}
+.info {
+  color: #4d4d4d;
+  font-size: 11px;
+  margin: 62px auto 0;
+  text-align: center;
+  text-shadow: 0 1px 0 hsla(0, 0%, 100%, 0.5);
+}
+
+.info p {
+  height: 11px;
+}
+
+.new-todo {
+  /*background: rgba(0, 0, 0, 0.003);*/
+  border: none;
+  height: 65px;
+  padding: 16px 16px 16px 60px;
+}
+.edit,
+.new-todo {
+  width: 100%;
+  box-sizing: border-box;
+  color: inherit;
+  font-family: inherit;
+  font-size: 24px;
+  font-weight: inherit;
+  line-height: 1.4em;
+  margin: 0;
+}
+.todoapp {
+  background: #fff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+  margin: 130px 0 40px;
+  position: relative;
+}
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  border: 0;
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.info a {
+  text-decoration: none;
+  color: inherit;
+}
+.info a:hover {
+  text-decoration: underline;
+}
+.new-todo {
+  font-weight: 400;
+  font-size: 24px;
+}
+::placeholder {
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.todo-list li {
+  width: 100%;
+  height: 58.8px;
+  font-size: 24px;
+  font-weight: 400;
+  list-style-type: none;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ededed;
+  justify-content: space-between;
+  color: #484848;
+}
+.todo-list {
+  padding-left: 0px;
+}
+input[type="checkbox"] {
+  height: 20px;
+  width: 20px;
+  border-radius: 100%;
+  margin-top: 9.4px;
+  margin-bottom: 9.4px;
+}
+.delete {
+  border: none;
+  background-color: #fff;
+  padding: 10px 20px;
+  font-size: 30px;
+  content: "×";
+  color: #fff;
+  cursor: pointer;
+  height: 88%;
+}
+.delete::after {
+  content: "×";
+  font-size: 30px;
+}
+.delete:hover {
+  color: #b83f45;
+  content: "×";
+  font-size: 30px;
+}
+.delete:active {
+  color: rgb(139, 0, 0);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
+    0 25px 50px 0 rgba(205, 30, 30, 0.1);
+  border-bottom: inset;
+}
+ul {
+  background-color: #fff;
+  margin: 0;
+}
+.edit-box {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  position: absolute;
+  height: 58.8px;
+  width: 550px;
+  font-size: 24px;
+  box-sizing: border-box;
+  align-items: center;
+  left: 0;
+}
+.edit-box:focus {
+  border: solid 1px #ce4646;
+  outline: none;
+  box-shadow: 0 0 2px 2px #cf7d7d;
+}
+.new-todo:focus {
+  border: none;
+  outline: none;
+  box-shadow: 0 0 2px 2px #cf7d7d;
+}
+.box-todo {
+  display: flex;
+  gap: 19px;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+}
+
+.has-tasks .new-todo {
+  border-bottom: 1px solid #ededed;
+}
+.has-tasks .new-todo:focus {
+  box-shadow: 0 0 2px 2px #cf7d7d;
+}
+input[type="checkbox"] {
+  appearance: none;
+  width: 31px;
+  height: 31px;
+  border: 1px solid;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border-color: light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+}
+
+input[type="checkbox"]:hover {
+  border-color: light-dark(rgb(118, 118, 118), rgb(133, 133, 133)) a;
+}
+
+input[type="checkbox"]:checked {
+  background-color: none; /* Màu nền khi chọn */
+  border-color: green;
+  border: 1px solid green;
+}
+
+input[type="checkbox"]:checked::after {
+  content: "✔";
+  color: green;
+  font-size: 20px;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px;
+}
+.filters {
+  padding: 10px 15px;
+  height: 40px;
+  box-shadow: none;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #e6e6e6;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 8px 0 -3px #f6f6f6,
+    0 9px 1px -3px rgba(0, 0, 0, 0.2), 0 16px 0 -6px #f6f6f6,
+    0 17px 2px -6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  box-sizing: border-box;
+}
+.filters li button {
+  background-color: #fff;
+  height: 24.4px;
+  width: auto;
+  cursor: pointer;
+  justify-content: center;
+  border-radius: 3px;
+  border: none;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  padding: 7px;
+}
+.filters li button:hover {
+  border: solid 1px #db7676;
+  box-shadow: 0 0 2px 2px #cf7d7d;
+}
+.completed-task {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.filters li {
+  display: flex;
+  font-size: 15px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+}
+.todo-count {
+  font-size: 15px;
+}
+strong {
+  font-weight: 100;
+  color: inherit;
+}
+.delete-all {
+  float: right;
+  border: none;
+  background-color: #fff;
+  font-size: 15px;
+  padding: 0;
+  color: inherit;
+}
+.delete-all:hover {
+  text-decoration: underline;
+  border: none;
+}
+.list-filters {
+  display: flex;
+  gap: 6px;
+  padding-left: 38px;
+}
+.filters button.active {
+  border: 1px solid #ce4646;
+}
+.filters button:focus {
+  border: 1px solid #ce4646;
+  box-shadow: 0 0 2px 2px #cf7d7d;
+}
+.container-input {
+  position: relative;
+}
+.toggle-all:hover {
+  border: none !important;
+}
+.toggle-all {
+  position: absolute !important;
+  top: 8px;
+  left: -14px;
+  height: 45px !important;
+  width: 65px !important;
+  border: none !important;
+  border-radius: 0 !important;
+  margin: 3px 3px 3px 4px !important;
+  transform: rotate(90deg);
+  color: #aaa;
+  padding-top: 8px;
+}
+.toggle-all:focus {
+  box-shadow: 0 0 2px 2px #cf7d7d;
+}
+.toggle-all:after {
+  border: none !important;
+  content: "❯" !important ;
+  display: flex !important;
+  align-content: center !important;
+  justify-content: center !important;
+  font-size: 19px;
+}
+.toggle-all:checked::after {
+  border: none !important;
+  content: "❯" !important ;
+  color: black !important;
+}
+.toggle-all:checked {
+  content: "❯" !important ;
+}
+.toggle-all:checked:focus {
+  box-shadow: 0 0 2px 2px #cf7d7d;
+  content: "❯" !important ;
+}
+.box {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+}
