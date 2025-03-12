@@ -234,6 +234,7 @@ input[type="checkbox"]:checked::after {
 }
 .todo-count {
   font-size: 15px;
+  width: 76.71px;
 }
 strong {
   font-weight: 100;
@@ -254,7 +255,8 @@ strong {
 .list-filters {
   display: flex;
   gap: 6px;
-  padding-left: 38px;
+  padding-left: 74px;
+  width: 223.68px;
 }
 .filters button.active {
   border: 1px solid #ce4646;
