@@ -210,14 +210,14 @@ input[type="checkbox"]:checked::after {
   cursor: pointer;
   justify-content: center;
   border-radius: 3px;
-  border: none;
+  border: 1px solid transparent;
   display: flex;
   align-items: center;
   font-size: 15px;
   padding: 7px;
 }
 .filters li button:hover {
-  border: solid 1px #db7676;
+  border: solid 1px #db7676 transparent;
   box-shadow: 0 0 2px 2px #cf7d7d;
 }
 .completed-task {
@@ -250,7 +250,7 @@ strong {
 }
 .delete-all:hover {
   text-decoration: underline;
-  border: none;
+  border: none transparent;
 }
 .list-filters {
   display: flex;
@@ -259,11 +259,12 @@ strong {
   width: 223.68px;
 }
 .filters button.active {
-  border: 1px solid #ce4646;
+  border-color: #ce4646;
 }
 .filters button:focus {
-  border: 1px solid #ce4646;
+  border-color: #ce4646;
   box-shadow: 0 0 2px 2px #cf7d7d;
+  outline: 0;
 }
 .container-input {
   position: relative;
@@ -312,4 +313,27 @@ strong {
 }
 .box {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+}
+@media (max-width: 600px) {
+  .todos {
+    font-size: 40px;
+  }
+  .todoapp {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .todo-list li {
+    font-size: 16px;
+  }
+  .filters {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    box-shadow: none;
+  }
+  .footer {
+    height: 100px;
+    background-color: #fff;
+  }
 }
