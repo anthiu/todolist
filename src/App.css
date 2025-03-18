@@ -83,6 +83,14 @@
   justify-content: space-between;
   color: #484848;
 }
+.todo-list li p {
+  line-height: 1.2;
+}
+.todo-list li input {
+  margin: auto 0;
+  min-width: 31px;
+  min-height: 31px;
+}
 .todo-list {
   padding-left: 0px;
 }

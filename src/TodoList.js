@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
+const API_URL = "https://dummyjson.com/todos";
+
 function TodoList() {
   const [tasks, setTasks] = useState(() => {
     const savedTasks = localStorage.getItem("tasks");
@@ -11,26 +13,58 @@ function TodoList() {
   const [editValue, setEditValue] = useState("");
   const [filter, setFilter] = useState("all");
 
-  // Lấy dữ liệu từ localStorage khi load trang
+  // ✅ Lấy danh sách công việc từ API khi component mount
   useEffect(() => {
-    const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    setTasks(savedTasks);
+    fetch(API_URL)
+      .then((res) => res.json())
+      .then((data) => {
+        const randomTasks = data.todos
+          .sort(() => 0.5 - Math.random())
+          .slice(0, 10);
+        setTasks(randomTasks);
+      })
+      .catch((error) => console.error("Lỗi tải công việc:", error));
   }, []);
 
-  // Lưu vào localStorage mỗi khi tasks thay đổi
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
+  // ✅ Thêm công việc mới vào API
+  const addTask = async () => {
+    if (!newTask.trim()) return;
 
-  const addTask = () => {
-    if (newTask.trim() !== "") {
-      setTasks([...tasks, { text: newTask, completed: false }]);
-      setNewTask("");
+    const newTaskObj = { todo: newTask, completed: false, userId: 1 };
+
+    try {
+      const response = await fetch("https://dummyjson.com/todos/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newTaskObj),
+      });
+
+      const data = await response.json();
+
+      if (data && data.todo) {
+        // Tạo công việc mới với ID tạm thời
+        const newTaskItem = {
+          id: tasks.length ? Math.max(...tasks.map((t) => t.id)) + 1 : 1,
+          todo: data.todo,
+          completed: data.completed,
+        };
+
+        setTasks((prevTasks) => [...prevTasks, newTaskItem]);
+        setNewTask("");
+      } else {
+        console.error("Lỗi thêm công việc:", data);
+      }
+    } catch (error) {
+      console.error("Lỗi kết nối API:", error);
     }
   };
 
-  const deleteTask = (index) => {
-    setTasks(tasks.filter((_, i) => i !== index));
+  // ✅ Xóa công việc khỏi API
+  const deleteTask = async (id) => {
+    const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+    if (response.ok) {
+      setTasks(tasks.filter((task) => task.id !== id));
+    }
   };
 
   // Xử lý Enter khi thêm công việc
@@ -40,34 +74,60 @@ function TodoList() {
     }
   };
 
-  // Đánh dấu hoàn thành công việc
-  const toggleComplete = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index].completed = !updatedTasks[index].completed;
-    setTasks(updatedTasks);
+  // ✅ Đánh dấu hoàn thành công việc
+  const toggleComplete = async (id) => {
+    const updatedTask = tasks.find((task) => task.id === id);
+    if (!updatedTask) return;
+
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ completed: !updatedTask.completed }),
+    });
+
+    if (response.ok) {
+      setTasks(
+        tasks.map((task) =>
+          task.id === id ? { ...task, completed: !task.completed } : task
+        )
+      );
+    }
   };
 
   // Chỉnh sửa công việc
-  const startEditing = (index) => {
-    setEditIndex(index);
-    setEditValue(tasks[index].text);
+  const startEditing = (id, todo) => {
+    setEditIndex(id);
+    setEditValue(todo);
   };
 
-  // Lưu chỉnh sửa
-  const saveEdit = (index) => {
-    if (editValue.trim() !== "") {
-      const updatedTasks = [...tasks];
-      updatedTasks[index].text = editValue;
-      setTasks(updatedTasks);
+  const saveEdit = async (id) => {
+    if (!editValue.trim()) {
+      setEditIndex(null);
+
+      return;
     }
-    setEditIndex(null);
-    setEditValue("");
+
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ todo: editValue }),
+    });
+
+    if (response.ok) {
+      setTasks(
+        tasks.map((task) =>
+          task.id === id ? { ...task, todo: editValue } : task
+        )
+      );
+      setEditIndex(null);
+      setEditValue("");
+    }
   };
 
   // Xử lý Enter khi chỉnh sửa
-  const handleKeyDownEdit = (e, index) => {
+  const handleKeyDownEdit = (e, id) => {
     if (e.key === "Enter") {
-      saveEdit(index);
+      saveEdit(id);
     }
   };
 
@@ -128,37 +188,37 @@ function TodoList() {
             placeholder="What needs to be done?"
           />
           <ul className="todo-list">
-            {filteredTasks.map((task, index) => (
-              <li key={index}>
+            {filteredTasks.map((task) => (
+              <li key={task.id}>
                 <div className="box-todo">
                   <input
                     type="checkbox"
                     checked={task.completed}
-                    onChange={() => toggleComplete(index)}
+                    onChange={() => toggleComplete(task.id)}
                     className="checkbox"
                   />
-                  {editIndex === index ? (
+                  {editIndex === task.id ? (
                     <input
                       className="edit-box"
                       type="text"
                       value={editValue}
                       onChange={(e) => setEditValue(e.target.value)}
-                      onBlur={() => saveEdit(index)}
-                      onKeyDown={(e) => handleKeyDownEdit(e, index)}
+                      onBlur={() => saveEdit(task.id)}
+                      onKeyDown={(e) => handleKeyDownEdit(e, task.id)}
                       autoFocus
                     />
                   ) : (
                     <p
                       className={task.completed ? "completed-task" : ""}
-                      onDoubleClick={() => startEditing(index)}
+                      onDoubleClick={() => startEditing(task.id)}
                     >
-                      {task.text}
+                      {task.todo}
                     </p>
                   )}
                 </div>
                 <button
                   className="delete"
-                  onClick={() => deleteTask(index)}
+                  onClick={() => deleteTask(task.id)}
                 ></button>
               </li>
             ))}
