@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import axios from "axios";
 
 const API_URL = "https://dummyjson.com/todos";
 
@@ -13,15 +14,21 @@ function TodoList() {
   const [editValue, setEditValue] = useState("");
   const [filter, setFilter] = useState("all");
 
+  fetch("https://dummyjson.com/todos?limit=4&random")
+    .then((res) => res.json())
+    .then(console.log);
+
   // ✅ Lấy danh sách công việc từ API khi component mount
   useEffect(() => {
-    fetch(API_URL)
-      .then((res) => res.json())
-      .then((data) => {
-        const randomTasks = data.todos
-          .sort(() => 0.5 - Math.random())
-          .slice(0, 6);
-        setTasks(randomTasks);
+    axios
+      .get(API_URL)
+      .then((response) => {
+        if (response.data && response.data.todos) {
+          const randomTasks = response.data.todos
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 5);
+          setTasks(randomTasks);
+        }
       })
       .catch((error) => console.error("Lỗi tải công việc:", error));
   }, []);
@@ -33,7 +40,7 @@ function TodoList() {
     const newTaskObj = { todo: newTask, completed: false, userId: 1 };
 
     try {
-      const response = await fetch("https://dummyjson.com/todos/add", {
+      const response = await fetch(API_URL + "add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newTaskObj),
@@ -61,9 +68,11 @@ function TodoList() {
 
   // ✅ Xóa công việc khỏi API
   const deleteTask = async (id) => {
-    const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-    if (response.ok) {
+    try {
+      await axios.delete(API_URL + `/${id}`);
       setTasks(tasks.filter((task) => task.id !== id));
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -102,25 +111,30 @@ function TodoList() {
 
   const saveEdit = async (id) => {
     if (!editValue.trim()) {
+      // Nếu để trống, hủy chế độ chỉnh sửa mà không cập nhật
       setEditIndex(null);
-
+      setEditValue("");
       return;
     }
 
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ todo: editValue }),
-    });
+    try {
+      const response = await fetch(`https://dummyjson.com/todos/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ todo: editValue }),
+      });
 
-    if (response.ok) {
-      setTasks(
-        tasks.map((task) =>
-          task.id === id ? { ...task, todo: editValue } : task
-        )
-      );
-      setEditIndex(null);
-      setEditValue("");
+      if (response.ok) {
+        setTasks(
+          tasks.map((task) =>
+            task.id === id ? { ...task, todo: editValue } : task
+          )
+        );
+        setEditIndex(null);
+        setEditValue("");
+      }
+    } catch (error) {
+      console.error("Lỗi khi sửa công việc:", error);
     }
   };
 
