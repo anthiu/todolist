@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import aixos from "axios";
 import axios from "axios";
 
 const API_URL = "https://dummyjson.com/todos";
@@ -30,7 +29,7 @@ function TodoList() {
       .catch((error) => console.error("Lỗi tải công việc:", error));
   }, []);
 
-  // ✅ Thêm công việc mới vào API
+  // ✅ Thêm công việc mới
   const addTask = async () => {
     if (!newTask.trim()) return;
 
@@ -63,10 +62,10 @@ function TodoList() {
     }
   };
 
-  // ✅ Xóa công việc khỏi API
+  //  Xóa công việc
   const deleteTask = async (id) => {
     try {
-      await axios.delete(API_URL+`/${id}`);
+      await axios.delete(API_URL + `/${id}`);
       setTasks(tasks.filter((task) => task.id !== id));
     } catch (error) {
       console.error(error);
@@ -80,7 +79,7 @@ function TodoList() {
     }
   };
 
-  // ✅ Đánh dấu hoàn thành công việc
+  //  Đánh dấu hoàn thành công việc
   const toggleComplete = async (id) => {
     const updatedTask = tasks.find((task) => task.id === id);
     if (!updatedTask) return;
@@ -107,7 +106,7 @@ function TodoList() {
   };
 
   const saveEdit = async (id) => {
-    if (!editValue.trim()) {
+    if (!editValue) {
       // Nếu để trống, hủy chế độ chỉnh sửa mà không cập nhật
       setEditIndex(null);
       setEditValue("");
@@ -149,13 +148,31 @@ function TodoList() {
     return true;
   });
 
-  const toggleAllComplete = () => {
+  const toggleAllComplete = async () => {
     const allCompleted = tasks.every((task) => task.completed);
-    const updatedTasks = tasks.map((task) => ({
-      ...task,
-      completed: !allCompleted,
-    }));
-    setTasks(updatedTasks);
+
+    try {
+      // Cập nhật từng công việc qua API
+      const updatedTasks = await Promise.all(
+        tasks.map(async (task) => {
+          const response = await fetch(
+            `https://dummyjson.com/todos/${task.id}`,
+            {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ completed: !allCompleted }),
+            }
+          );
+
+          const data = await response.json();
+          return { ...task, completed: data.completed };
+        })
+      );
+
+      setTasks(updatedTasks);
+    } catch (error) {
+      console.error("Lỗi khi cập nhật tất cả công việc:", error);
+    }
   };
 
   // Đếm số công việc chưa hoàn thành
@@ -185,7 +202,7 @@ function TodoList() {
           )}
         </div>
 
-        <label class="visually-hidden" for="todo-input">
+        <label className="visually-hidden" for="todo-input">
           New Todo Input
         </label>
         <div className="box">
