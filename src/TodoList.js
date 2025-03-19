@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import aixos from "axios";
 import axios from "axios";
 
 const API_URL = "https://dummyjson.com/todos";
@@ -13,10 +14,6 @@ function TodoList() {
   const [editIndex, setEditIndex] = useState(null);
   const [editValue, setEditValue] = useState("");
   const [filter, setFilter] = useState("all");
-
-  fetch("https://dummyjson.com/todos?limit=4&random")
-    .then((res) => res.json())
-    .then(console.log);
 
   // ✅ Lấy danh sách công việc từ API khi component mount
   useEffect(() => {
@@ -40,7 +37,7 @@ function TodoList() {
     const newTaskObj = { todo: newTask, completed: false, userId: 1 };
 
     try {
-      const response = await fetch(API_URL + "add", {
+      const response = await fetch("https://dummyjson.com/todos/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newTaskObj),
@@ -69,7 +66,7 @@ function TodoList() {
   // ✅ Xóa công việc khỏi API
   const deleteTask = async (id) => {
     try {
-      await axios.delete(API_URL + `/${id}`);
+      await axios.delete(API_URL+`/${id}`);
       setTasks(tasks.filter((task) => task.id !== id));
     } catch (error) {
       console.error(error);
