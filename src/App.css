@@ -85,6 +85,7 @@
 }
 .todo-list li p {
   line-height: 1.2;
+  margin: 0;
 }
 .todo-list li input {
   margin: auto 0;
