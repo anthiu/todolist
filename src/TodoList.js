@@ -20,7 +20,7 @@ function TodoList() {
       setTasks(JSON.parse(savedTasks));
     } else {
       axios
-        .get(`${API_URL}/random`)
+        .get("https://dummyjson.com/todos?limit=5")
         .then((res) => {
           setTasks(res.data.todos);
           localStorage.setItem("tasks", JSON.stringify(res.data.todos));
@@ -49,25 +49,39 @@ function TodoList() {
   const addTask = async () => {
     if (!newTask.trim()) return;
 
+    const newTaskObj = { todo: newTask, completed: false, userId: 1 };
+
     try {
-      const { data } = await axios.post("https://dummyjson.com/todos/add", {
-        todo: newTask,
-        completed: false,
-        userId: 1,
+      const response = await fetch("https://dummyjson.com/todos/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newTaskObj),
       });
 
-      const updatedTasks = [...tasks, data];
-      setTasks(updatedTasks);
-      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-      setNewTask("");
+      const data = await response.json();
+
+      if (data && data.todo) {
+        // Tạo công việc mới với ID tạm thời
+        const newTaskItem = {
+          id: tasks.length ? Math.max(...tasks.map((t) => t.id)) + 1 : 1,
+          todo: data.todo,
+          completed: data.completed,
+        };
+
+        setTasks((prevTasks) => [...prevTasks, newTaskItem]);
+        setNewTask("");
+      } else {
+        console.error("Lỗi thêm công việc:", data);
+      }
     } catch (error) {
-      console.error("Lỗi khi thêm công việc:", error);
+      console.error("Lỗi kết nối API:", error);
     }
   };
 
   //  Xóa công việc
   const deleteTask = async (id) => {
     try {
+      await axios.delete(API_URL + `/${id}`);
       setTasks(tasks.filter((task) => task.id !== id));
       localStorage.setItem(
         "tasks",
