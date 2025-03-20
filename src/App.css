@@ -158,7 +158,7 @@ ul {
   gap: 19px;
   justify-content: center;
   align-items: center;
-  padding: 4px;
+  padding-left: 8px;
 }
 
 .has-tasks .new-todo {
