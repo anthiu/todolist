@@ -14,21 +14,6 @@ function TodoList() {
   const [editValue, setEditValue] = useState("");
   const [filter, setFilter] = useState("all");
 
-  useEffect(() => {
-    const savedTasks = localStorage.getItem("tasks");
-    if (savedTasks) {
-      setTasks(JSON.parse(savedTasks));
-    } else {
-      axios
-        .get("https://dummyjson.com/todos?limit=5")
-        .then((res) => {
-          setTasks(res.data.todos);
-          localStorage.setItem("tasks", JSON.stringify(res.data.todos));
-        })
-        .catch((error) => console.error("Lỗi tải công việc:", error));
-    }
-  }, []);
-
   // ✅ Lấy danh sách công việc từ API khi component mount
   useEffect(() => {
     axios
