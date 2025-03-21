@@ -24,7 +24,7 @@ function TodoList() {
             .sort(() => 0.5 - Math.random())
             .slice(0, 5);
           setTasks(randomTasks);
-          localStorage.setItem("tasks", JSON.stringify(randomTasks));
+          console.log(response.data);
         }
       })
       .catch((error) => console.error("Lỗi tải công việc:", error));
@@ -85,22 +85,23 @@ function TodoList() {
   };
 
   //  Đánh dấu hoàn thành công việc
+
   const toggleComplete = async (id) => {
-    const updatedTask = tasks.find((task) => task.id === id);
-    if (!updatedTask) return;
+    try {
+      const updatedTask = tasks.find((task) => task.id === id);
+      if (!updatedTask) return;
 
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ completed: !updatedTask.completed }),
-    });
+      await axios.patch(`${API_URL}/${id}`, {
+        completed: !updatedTask.completed,
+      });
 
-    if (response.ok) {
-      setTasks(
-        tasks.map((task) =>
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
           task.id === id ? { ...task, completed: !task.completed } : task
         )
       );
+    } catch (error) {
+      console.error("Lỗi khi cập nhật task:", error);
     }
   };
 
