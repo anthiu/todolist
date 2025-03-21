@@ -113,7 +113,6 @@ function TodoList() {
 
   const saveEdit = async (id) => {
     if (!editValue) {
-      // Nếu để trống, hủy chế độ chỉnh sửa mà không cập nhật
       setEditIndex(null);
       setEditValue("");
       return;
@@ -158,7 +157,7 @@ function TodoList() {
     const allCompleted = tasks.every((task) => task.completed);
 
     try {
-      // Cập nhật từng công việc qua API
+      // Cập nhật từng công việc
       const updatedTasks = await Promise.all(
         tasks.map(async (task) => {
           const response = await fetch(
@@ -292,7 +291,7 @@ function TodoList() {
                     </button>
                   </li>
                 </div>
-                {/* Thêm nút xóa tất cả công việc hoàn thành */}
+                {/*  nút xóa tất cả công việc hoàn thành */}
                 <button className="delete-all" onClick={clearCompletedTasks}>
                   Clear completed
                 </button>
