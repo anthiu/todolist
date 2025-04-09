@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
+
 import axios from "axios";
 
 const API_URL = "https://dummyjson.com/todos";
 
 function TodoList() {
-  const [tasks, setTasks] = useState(() => {
-    const savedTasks = localStorage.getItem("tasks");
-    return savedTasks ? JSON.parse(savedTasks) : [];
-  });
+  const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [editIndex, setEditIndex] = useState(null);
   const [editValue, setEditValue] = useState("");
   const [filter, setFilter] = useState("all");
+  const [isShowHeading, setIsShowHeading] = useState(true);
 
   // ✅ Lấy danh sách công việc từ API khi component mount
   useEffect(() => {
@@ -24,7 +22,6 @@ function TodoList() {
             .sort(() => 0.5 - Math.random())
             .slice(0, 5);
           setTasks(randomTasks);
-          console.log(response.data);
         }
       })
       .catch((error) => console.error("Lỗi tải công việc:", error));
@@ -85,7 +82,6 @@ function TodoList() {
   };
 
   //  Đánh dấu hoàn thành công việc
-
   const toggleComplete = async (id) => {
     try {
       const updatedTask = tasks.find((task) => task.id === id);
@@ -157,7 +153,6 @@ function TodoList() {
     const allCompleted = tasks.every((task) => task.completed);
 
     try {
-      // Cập nhật từng công việc
       const updatedTasks = await Promise.all(
         tasks.map(async (task) => {
           const response = await fetch(
@@ -188,9 +183,18 @@ function TodoList() {
     setTasks(tasks.filter((task) => !task.completed));
   };
 
+  const handleClickButton = () => {
+    setIsShowHeading(!isShowHeading);
+  };
+
   return (
     <div className={`todo-app ${tasks.length > 0 ? "has-tasks" : ""}`}>
-      <h1 className="todos">todos</h1>
+      {isShowHeading && (
+        <h1 onClick={handleClickButton} className="todos">
+          todos
+        </h1>
+      )}
+
       <div className="container-input">
         <div className="toggle-all-box">
           {tasks.length > 0 && (
@@ -222,7 +226,7 @@ function TodoList() {
           />
           <ul className="todo-list">
             {filteredTasks.map((task) => (
-              <li key={task.id}>
+              <li key={tasks.id}>
                 <div className="box-todo">
                   <input
                     type="checkbox"
@@ -291,7 +295,6 @@ function TodoList() {
                     </button>
                   </li>
                 </div>
-                {/*  nút xóa tất cả công việc hoàn thành */}
                 <button className="delete-all" onClick={clearCompletedTasks}>
                   Clear completed
                 </button>
@@ -300,8 +303,6 @@ function TodoList() {
           </footer>
         </div>
       </div>
-
-      {/* Bộ lọc công việc */}
 
       <footer className="info">
         <p>Double-click to edit a todo</p>

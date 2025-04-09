@@ -188,7 +188,7 @@ input[type="checkbox"]:hover {
 }
 
 input[type="checkbox"]:checked {
-  background-color: none; /* Màu nền khi chọn */
+  background-color: none;
   border-color: green;
   border: 1px solid green;
 }
