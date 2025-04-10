@@ -3,7 +3,7 @@ import TaskItem from "./TaskItem";
 export default function TaskList({
   filteredTasks,
   deleteTask,
-  toggleComplete,
+  handleToggleComplete,
   startEditing,
   editIndex,
   editValue,
@@ -19,7 +19,7 @@ export default function TaskList({
             index={index}
             task={task}
             deleteTask={deleteTask}
-            toggleComplete={toggleComplete}
+            handleToggleComplete={handleToggleComplete}
             startEditing={startEditing}
             editIndex={editIndex}
             editValue={editValue}

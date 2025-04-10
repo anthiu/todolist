@@ -1,9 +1,9 @@
-export default function ButtonToggle({ toggleComplete, index, task }) {
+export default function ButtonToggle({ handleToggleComplete, index, task }) {
   return (
     <input
       type="checkbox"
       checked={task.completed}
-      onChange={() => toggleComplete(index)}
+      onChange={() => handleToggleComplete(index)}
       className="checkbox"
     />
   );

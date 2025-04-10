@@ -20,10 +20,10 @@ function Filter() {
         const response = await axios.get(
           "https://dummyjson.com/todos?limit=0&skip=0"
         );
-        const rndTask = response.data.todos;
+
         //   .sort(() => 0.5 - Math.random())
         //   .slice(0, 3);
-        setTasks(rndTask);
+        setTasks(response.data.todos);
       } catch (error) {
         console.error(error);
       }
@@ -51,13 +51,13 @@ function Filter() {
     setTasks(updatedTasks);
   }
 
-  const toggleComplete = (index) => {
+  const handleToggleComplete = (index) => {
     const completedTask = [...tasks];
     completedTask[index].completed = !completedTask[index].completed;
     setTasks(completedTask);
   };
 
-  const toggleAllComplete = () => {
+  const handleToggleAllComplete = () => {
     const allCompleted = tasks.every((task) => task.completed);
     const updatedTasks = tasks.map((task) => ({
       ...task,
@@ -96,7 +96,10 @@ function Filter() {
         <div className="toggle-all-box">
           {tasks.length > 0 && (
             <>
-              <ToggleAll tasks={tasks} toggleAllComplete={toggleAllComplete} />
+              <ToggleAll
+                tasks={tasks}
+                handleToggleAllComplete={handleToggleAllComplete}
+              />
             </>
           )}
         </div>
@@ -109,7 +112,7 @@ function Filter() {
           <TaskList
             filteredTasks={filteredTasks}
             deleteTask={deleteTask}
-            toggleComplete={toggleComplete}
+            handleToggleComplete={handleToggleComplete}
             startEditing={startEditing}
             editIndex={editIndex}
             editValue={editValue}

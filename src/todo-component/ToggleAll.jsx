@@ -1,4 +1,4 @@
-export default function ToggleAll({ tasks, toggleAllComplete }) {
+export default function ToggleAll({ tasks, handleToggleAllComplete }) {
   return (
     <>
       <input
@@ -6,7 +6,7 @@ export default function ToggleAll({ tasks, toggleAllComplete }) {
         id="toggle-all-id"
         className="toggle-all"
         checked={tasks.every((task) => task.completed)}
-        onChange={toggleAllComplete}
+        onChange={handleToggleAllComplete}
       />
       <label htmlFor="toggle-all"></label>
     </>
