@@ -20,9 +20,6 @@ function Filter() {
         const response = await axios.get(
           "https://dummyjson.com/todos?limit=10&skip=0"
         );
-
-        //   .sort(() => 0.5 - Math.random())
-        //   .slice(0, 3);
         setTasks(response.data.todos);
       } catch (error) {
         console.error(error);
@@ -95,12 +92,12 @@ function Filter() {
       <div className="container-input">
         <div className="toggle-all-box">
           {tasks.length > 0 && (
-            <>
+            <div>
               <ToggleAll
                 tasks={tasks}
                 handleToggleAllComplete={handleToggleAllComplete}
               />
-            </>
+            </div>
           )}
         </div>
         <TaskInput
