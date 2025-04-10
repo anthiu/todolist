@@ -16,6 +16,7 @@ export default function TaskList({
       {filteredTasks.map((task, index) => (
         <div>
           <TaskItem
+            key={task.id}
             index={index}
             task={task}
             deleteTask={deleteTask}

@@ -6,7 +6,7 @@ export default function TaskItem({
   index,
   task,
   deleteTask,
-  toggleComplete,
+  handleToggleComplete,
   startEditing,
   editIndex,
   editValue,
@@ -15,10 +15,10 @@ export default function TaskItem({
   handleKeyDownEdit,
 }) {
   return (
-    <li key={index}>
+    <li>
       <div className="box-todo">
         <ButtonToggle
-          toggleComplete={toggleComplete}
+          handleToggleComplete={handleToggleComplete}
           index={index}
           task={task}
         />

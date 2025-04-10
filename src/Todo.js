@@ -18,7 +18,7 @@ function Filter() {
     const getTasks = async () => {
       try {
         const response = await axios.get(
-          "https://dummyjson.com/todos?limit=0&skip=0"
+          "https://dummyjson.com/todos?limit=10&skip=0"
         );
 
         //   .sort(() => 0.5 - Math.random())
@@ -72,13 +72,13 @@ function Filter() {
 
   const startEditing = (index) => {
     setEditIndex(index);
-    setEditValue(tasks[index.name]);
+    setEditValue(tasks[index.todo]);
   };
 
   const saveEdit = (index) => {
     if (editValue.trim() !== "") {
       const editedTask = [...tasks];
-      editedTask[index].name = editValue;
+      editedTask[index].todo = editValue;
       setTasks(editedTask);
     }
     setEditIndex(null);
