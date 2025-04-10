@@ -1,23 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
-import TaskInput from "./TodoComponent/TaskInput";
-import Footer from "./TodoComponent/Footer";
-import Filterbot from "./TodoComponent/FilterCompleted";
-import TaskList from "./TodoComponent/TaskList";
-import ToggleAll from "./TodoComponent/ToggleAll";
+import TaskInput from "./todo-component/TaskInput";
+import Footer from "./todo-component/Footer";
+import Filterbot from "./todo-component/FilterCompleted";
+import TaskList from "./todo-component/TaskList";
+import ToggleAll from "./todo-component/ToggleAll";
+import axios from "axios";
 
 function Filter() {
-  const [tasks, setTasks] = useState([
-    { id: 1, name: "di hoc", completed: false },
-    { id: 2, name: "di choi", completed: true },
-    { id: 3, name: "di farm", completed: false },
-  ]);
+  const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [filter, setFilter] = useState("all");
   const [editIndex, setEditIndex] = useState(null);
   const [editValue, setEditValue] = useState("");
 
+  useEffect(() => {
+    const getTasks = async () => {
+      try {
+        const response = await axios.get(
+          "https://dummyjson.com/todos?limit=0&skip=0"
+        );
+        const rndTask = response.data.todos;
+        //   .sort(() => 0.5 - Math.random())
+        //   .slice(0, 3);
+        setTasks(rndTask);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getTasks();
+  }, []);
+
   const incompleteTasksCount = tasks.filter((task) => !task.completed).length;
+
   const filteredTasks = tasks.filter((task) => {
     if (filter === "active") return !task.completed;
     if (filter === "completed") return task.completed;
@@ -26,7 +41,7 @@ function Filter() {
 
   function addTask() {
     if (newTask.trim() !== "") {
-      setTasks((t) => [...t, { name: newTask, completed: false }]);
+      setTasks((t) => [...t, { todo: newTask, completed: false }]);
       setNewTask("");
     }
   }

@@ -35,7 +35,7 @@ export default function TaskItem({
             onDoubleClick={() => startEditing(index)}
             className={task.completed ? " completed-task" : ""}
           >
-            {task.name}
+            {task.todo}
           </p>
         )}
       </div>
