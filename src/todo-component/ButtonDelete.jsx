@@ -1,3 +1,5 @@
-export default function ButtonDelete({ deleteTask, index }) {
-  return <button className="delete" onClick={() => deleteTask(index)}></button>;
+export default function ButtonDelete({ onDeleteTask, index }) {
+  return (
+    <button className="delete" onClick={() => onDeleteTask(index)}></button>
+  );
 }

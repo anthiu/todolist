@@ -1,6 +1,6 @@
 export default function Filterbot({
   tasks,
-  clearCompletedTasks,
+  handleClearCompletedTasks,
   incompleteTasksCount,
   setFilter,
   filter,
@@ -41,7 +41,7 @@ export default function Filterbot({
               </button>
             </li>
           </div>
-          <button className="delete-all" onClick={clearCompletedTasks}>
+          <button className="delete-all" onClick={handleClearCompletedTasks}>
             Clear completed
           </button>
         </ul>

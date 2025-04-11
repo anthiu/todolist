@@ -2,13 +2,13 @@ import TaskItem from "./TaskItem";
 
 export default function TaskList({
   filteredTasks,
-  deleteTask,
+  onDeleteTask,
   handleToggleComplete,
-  startEditing,
+  handleStartEditing,
   editIndex,
   editValue,
   setEditValue,
-  saveEdit,
+  handleSaveEdit,
   handleKeyDownEdit,
 }) {
   return (
@@ -19,13 +19,13 @@ export default function TaskList({
             key={task.id}
             index={index}
             task={task}
-            deleteTask={deleteTask}
+            onDeleteTask={onDeleteTask}
             handleToggleComplete={handleToggleComplete}
-            startEditing={startEditing}
+            handleStartEditing={handleStartEditing}
             editIndex={editIndex}
             editValue={editValue}
             setEditValue={setEditValue}
-            saveEdit={saveEdit}
+            handleSaveEdit={handleSaveEdit}
             handleKeyDownEdit={handleKeyDownEdit}
           />
         </div>

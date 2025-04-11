@@ -1,7 +1,7 @@
 export default function EditBox({
   editValue,
   setEditValue,
-  saveEdit,
+  handleSaveEdit,
   handleKeyDownEdit,
   index,
 }) {
@@ -11,7 +11,7 @@ export default function EditBox({
       value={editValue}
       type="text"
       onChange={(e) => setEditValue(e.target.value)}
-      onBlur={() => saveEdit(index)}
+      onBlur={() => handleSaveEdit(index)}
       onKeyDown={(e) => handleKeyDownEdit(e, index)}
       autoFocus
     />

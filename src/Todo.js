@@ -18,7 +18,7 @@ function Filter() {
     const getTasks = async () => {
       try {
         const response = await axios.get(
-          "https://dummyjson.com/todos?limit=10&skip=0"
+          "https://dummyjson.com/todos?limit=30&skip=220"
         );
         setTasks(response.data.todos);
       } catch (error) {
@@ -36,17 +36,17 @@ function Filter() {
     return true;
   });
 
-  function addTask() {
+  const addTask = () => {
     if (newTask.trim() !== "") {
       setTasks((t) => [...t, { todo: newTask, completed: false }]);
       setNewTask("");
     }
-  }
+  };
 
-  function deleteTask(index) {
+  const onDeleteTask = (index) => {
     const updatedTasks = tasks.filter((_, i) => i !== index);
     setTasks(updatedTasks);
-  }
+  };
 
   const handleToggleComplete = (index) => {
     const completedTask = [...tasks];
@@ -63,16 +63,16 @@ function Filter() {
     setTasks(updatedTasks);
   };
 
-  const clearCompletedTasks = () => {
+  const handleClearCompletedTasks = () => {
     setTasks(tasks.filter((task) => !task.completed));
   };
 
-  const startEditing = (index) => {
+  const handleStartEditing = (index) => {
     setEditIndex(index);
     setEditValue(tasks[index.todo]);
   };
 
-  const saveEdit = (index) => {
+  const handleSaveEdit = (index) => {
     if (editValue.trim() !== "") {
       const editedTask = [...tasks];
       editedTask[index].todo = editValue;
@@ -83,7 +83,7 @@ function Filter() {
   };
 
   const handleKeyDownEdit = (e, index) => {
-    if (e.key === "Enter") saveEdit(index);
+    if (e.key === "Enter") handleSaveEdit(index);
   };
 
   return (
@@ -108,19 +108,19 @@ function Filter() {
         <div className="box">
           <TaskList
             filteredTasks={filteredTasks}
-            deleteTask={deleteTask}
+            onDeleteTask={onDeleteTask}
             handleToggleComplete={handleToggleComplete}
-            startEditing={startEditing}
+            handleStartEditing={handleStartEditing}
             editIndex={editIndex}
             editValue={editValue}
             setEditValue={setEditValue}
-            saveEdit={saveEdit}
+            handleSaveEdit={handleSaveEdit}
             handleKeyDownEdit={handleKeyDownEdit}
           />
         </div>
         <Filterbot
           tasks={tasks}
-          clearCompletedTasks={clearCompletedTasks}
+          handleClearCompletedTasks={handleClearCompletedTasks}
           incompleteTasksCount={incompleteTasksCount}
           setFilter={setFilter}
           filter={filter}

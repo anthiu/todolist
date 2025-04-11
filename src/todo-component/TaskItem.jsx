@@ -5,13 +5,13 @@ import EditBox from "./EditBox";
 export default function TaskItem({
   index,
   task,
-  deleteTask,
+  onDeleteTask,
   handleToggleComplete,
-  startEditing,
+  handleStartEditing,
   editIndex,
   editValue,
   setEditValue,
-  saveEdit,
+  handleSaveEdit,
   handleKeyDownEdit,
 }) {
   return (
@@ -27,19 +27,19 @@ export default function TaskItem({
             index={index}
             editValue={editValue}
             setEditValue={setEditValue}
-            saveEdit={saveEdit}
+            handleSaveEdit={handleSaveEdit}
             handleKeyDownEdit={handleKeyDownEdit}
           />
         ) : (
           <p
-            onDoubleClick={() => startEditing(index)}
+            onDoubleClick={() => handleStartEditing(index)}
             className={task.completed ? " completed-task" : ""}
           >
             {task.todo}
           </p>
         )}
       </div>
-      <ButtonDelete index={index} deleteTask={deleteTask} />
+      <ButtonDelete index={index} onDeleteTask={onDeleteTask} />
     </li>
   );
 }
