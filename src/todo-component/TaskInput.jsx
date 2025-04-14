@@ -1,4 +1,4 @@
-export default function TaskInput({ newTask, setNewTask, addTask }) {
+export default function TaskInput({ newTask, setNewTask, onAddTask }) {
   return (
     <>
       <label className="visually-hidden" htmlFor="todo-input">
@@ -10,7 +10,7 @@ export default function TaskInput({ newTask, setNewTask, addTask }) {
           className="new-todo"
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && addTask()}
+          onKeyDown={(e) => e.key === "Enter" && onAddTask()}
           placeholder="What needs to be done?"
         />
       </div>

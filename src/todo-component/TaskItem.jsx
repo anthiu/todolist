@@ -15,7 +15,7 @@ export default function TaskItem({
   handleKeyDownEdit,
 }) {
   return (
-    <li>
+    <li key={task.id}>
       <div className="box-todo">
         <ButtonToggle
           handleToggleComplete={handleToggleComplete}

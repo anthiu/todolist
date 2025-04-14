@@ -14,11 +14,12 @@ function Filter() {
   const [editIndex, setEditIndex] = useState(null);
   const [editValue, setEditValue] = useState("");
 
+  // Fetch tasks from API
   useEffect(() => {
     const getTasks = async () => {
       try {
         const response = await axios.get(
-          "https://dummyjson.com/todos?limit=30&skip=220"
+          "https://dummyjson.com/todos?limit=15&skip=130"
         );
         setTasks(response.data.todos);
       } catch (error) {
@@ -28,56 +29,79 @@ function Filter() {
     getTasks();
   }, []);
 
+  //Save tasks to local storage
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+  //
   const incompleteTasksCount = tasks.filter((task) => !task.completed).length;
 
+  // Filter tasks based on the selected filter
   const filteredTasks = tasks.filter((task) => {
     if (filter === "active") return !task.completed;
     if (filter === "completed") return task.completed;
     return true;
   });
 
-  const addTask = () => {
+  // Add a new task
+  function onAddTask() {
     if (newTask.trim() !== "") {
-      setTasks((t) => [...t, { todo: newTask, completed: false }]);
+      setTasks((t) => [
+        ...t,
+        { id: tasks.length, todo: newTask, completed: false },
+      ]);
       setNewTask("");
     }
-  };
+  }
 
-  const onDeleteTask = (index) => {
+  // Delete a task
+  function onDeleteTask(index) {
     const updatedTasks = tasks.filter((_, i) => i !== index);
     setTasks(updatedTasks);
-  };
+  }
 
-  const handleToggleComplete = (index) => {
+  // Toggle task completion
+  function handleToggleComplete(index) {
     const completedTask = [...tasks];
     completedTask[index].completed = !completedTask[index].completed;
     setTasks(completedTask);
-  };
+  }
 
-  const handleToggleAllComplete = () => {
+  // Toggle all tasks completion
+  function handleToggleAllComplete() {
     const allCompleted = tasks.every((task) => task.completed);
     const updatedTasks = tasks.map((task) => ({
       ...task,
       completed: !allCompleted,
     }));
     setTasks(updatedTasks);
-  };
+  }
 
+  // Clear completed tasks
   const handleClearCompletedTasks = () => {
     setTasks(tasks.filter((task) => !task.completed));
   };
 
+  // Start editing a task
   const handleStartEditing = (index) => {
     setEditIndex(index);
     setEditValue(tasks[index.todo]);
   };
 
+  // Save edited task
   const handleSaveEdit = (index) => {
+    if (!(editValue || "").trim()) {
+      setEditIndex(null);
+      setEditValue("");
+      return;
+    }
     if (editValue.trim() !== "") {
       const editedTask = [...tasks];
       editedTask[index].todo = editValue;
       setTasks(editedTask);
     }
+
     setEditIndex(null);
     setEditValue("");
   };
@@ -103,7 +127,7 @@ function Filter() {
         <TaskInput
           newTask={newTask}
           setNewTask={setNewTask}
-          addTask={addTask}
+          onAddTask={onAddTask}
         />
         <div className="box">
           <TaskList
